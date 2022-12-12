@@ -1,9 +1,13 @@
 package com.heaven.learnspringframework.game;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
 public class GameRunner {
 //    private MarioGame game;
     private GamingConsole game;
-    public GameRunner(GamingConsole game) {
+    public GameRunner(@Qualifier("marioGame") GamingConsole game) {
         this.game = game;
     }
 
