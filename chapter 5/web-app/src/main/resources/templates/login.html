@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/5.0.1/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to Login Page</h1>
+    <form method="post" th:action="@{/welcome}">
+        <input type="text" name="name">
+        <input type="password" name="password" id="password">
+        <input type="submit" value="Login">
+    </form>
+    <p th:if="${error}">Invalid authentication</p>
+</div>
+
+</body>
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.0.1/js/bootstrap.min.js}"></script>
+</html>

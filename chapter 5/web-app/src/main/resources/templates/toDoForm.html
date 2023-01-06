@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do Form</title>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/5.0.1/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container">
+    <h1>Enter To Do Details</h1>
+
+    <form action="#" th:action="@{/add}" method="post" th:object="${todo}">
+        <input type="hidden" id="id" th:field="*{id}">
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" th:field="*{description}">
+            <p class="alert alert-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}" />
+        </div>
+        <div class="mb-3">
+            <label for="targetDate" class="form-label">Target</label>
+            <input type="date" class="form-control" id="targetDate" th:field="*{targetDate}">
+            <p class="alert alert-danger" th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}" />
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="done" th:field="*{done}" th:value="*{done}">
+            <label class="form-check-label" for="done">Done?</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+</div>
+</body>
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.0.1/js/bootstrap.min.js}"></script>
+</html>

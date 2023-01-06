@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/5.0.1/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container">
+    <div>Welcome to <span th:text="${name}"></span></div>
+    <hr>
+    <h1>Your To Do List</h1>
+    <table class="table">
+        <thead>
+        <th>ID</th>
+        <th>Description</th>
+        <th>Target Date</th>
+        <th>Is Done</th>
+        <th>Action</th>
+        </thead>
+        <tbody>
+        <tr th:each="todo:${todos}">
+            <td th:text="${todo.id}"></td>
+            <td th:text="${todo.description}"></td>
+            <td th:text="${todo.targetDate}"></td>
+            <td th:text="${todo.done}"></td>
+            <td>
+                <a class="btn btn-info" th:href="@{/edit/{id}(id=${todo.id})}">Update</a>
+                <a class="btn btn-danger" th:href="@{/delete(id=${todo.id})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/add-to-do}" class="btn btn-success">Add To Do</a>
+</div>
+
+</body>
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.0.1/js/bootstrap.min.js}"></script>
+</html>
