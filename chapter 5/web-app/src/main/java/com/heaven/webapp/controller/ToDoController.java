@@ -4,27 +4,25 @@ import com.heaven.webapp.entity.Todo;
 import com.heaven.webapp.service.ToDoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("name")
-@RequestMapping("")
 public class ToDoController {
 
     private final ToDoService service;
     @GetMapping("/list")
     public String listAll(Model model){
-
-        List<Todo> list = service.getTodos("heavenlight");
+        String username = getLoggedInUsername(model);
+        List<Todo> list = service.getTodos(username);
+        model.addAttribute("name",username);
         model.addAttribute("todos",list);
         return "listTodos";
     }
@@ -40,7 +38,8 @@ public class ToDoController {
             model.addAttribute("todo",todo);
             return "todoForm";
         }
-        todo.setUsername(model.getAttribute("name").toString());
+
+        todo.setUsername(getLoggedInUsername(model));
         service.addTodo(todo);
         return "redirect:/list";
 
@@ -56,5 +55,10 @@ public class ToDoController {
     public String updateToDo(@PathVariable("id") Integer id, Model model){
         model.addAttribute("todo",service.findById("heavenlight",id));
         return "todoForm";
+    }
+
+    private String getLoggedInUsername(Model model){
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 }

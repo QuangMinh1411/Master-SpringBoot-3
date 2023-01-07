@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>To Do Form</title>
-    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/5.0.1/css/bootstrap.min.css}"/>
+<head th:replace="template::header('ToDoForm')">
+
 </head>
 <body>
 <div class="container">
+    <nav th:replace="template::nav"></nav>
     <h1>Enter To Do Details</h1>
-
     <form action="#" th:action="@{/add}" method="post" th:object="${todo}">
         <input type="hidden" id="id" th:field="*{id}">
         <div class="mb-3">
@@ -30,7 +28,10 @@
     </form>
 </div>
 </body>
-<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
-<script th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/5.0.1/js/bootstrap.min.js}"></script>
+<div th:replace="template::code"></div>
+<script type="text/javascript" >
+    $("#targetDate").datepicker({
+        format: 'yyyy-mm-dd'
+    });
+</script>
 </html>
