@@ -18,7 +18,7 @@
         </div>
         <div class="mb-3">
             <label for="targetDate" class="form-label">Target</label>
-            <input type="date" class="form-control" id="targetDate" th:field="*{targetDate}">
+            <input type="date" class="form-control" id="targetDate" th:field="*{targetDate}" th:value="*{targetDate}">
             <p class="alert alert-danger" th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}" />
         </div>
         <div class="mb-3 form-check">
