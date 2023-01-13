@@ -54,7 +54,7 @@ public class ToDoController {
 
     @GetMapping("/edit/{id}")
     public String updateToDo(@PathVariable("id") Integer id, Model model){
-        model.addAttribute("todo",service.findById(id));
+        model.addAttribute("todo",service.findById("heavenlight",id));
         return "todoForm";
     }
 }

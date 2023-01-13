@@ -24,7 +24,7 @@ public class ToDoService {
             repo.save(todo);
        }
        else {
-           Todo exist = findById(todo.getId());
+           Todo exist = findById("heavenlight",todo.getId());
            exist.setDescription(todo.getDescription());
            exist.setTargetDate(todo.getTargetDate());
            exist.setDone(todo.isDone());
@@ -32,8 +32,9 @@ public class ToDoService {
        }
     }
 
-    public Todo findById(Integer id){
-        return repo.findById(id).orElse(null);
+    public Todo findById(String name,Integer id){
+
+        return repo.findTodoByUsernameAndAndId(name,id);
     }
 
     public void deleteToDo(Integer id){

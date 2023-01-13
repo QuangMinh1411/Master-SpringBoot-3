@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface ToDoRepository extends JpaRepository<Todo,Integer> {
     List<Todo> findTodosByUsername(String name);
+    Todo findTodoByUsernameAndAndId(String name,Integer id);
 }
