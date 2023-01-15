@@ -1,68 +1,88 @@
 import React, { useEffect, useState } from "react";
-import { retrievedAllToDosForUser } from "./api/TodoApiService";
-
+import { useNavigate } from "react-router-dom";
+import { retrievedAllToDosForUser, deleteTodoApi } from "./api/TodoApiService";
+import { useAuth } from "./security/AuthContext";
 const ListToDo = () => {
-  // const today = new Date();
-  // const target = new Date(
-  //   today.getFullYear() + 12,
-  //   today.getMonth(),
-  //   today.getDay()
-  // );
-  // const todos = [
-  //   {
-  //     id: 1,
-  //     description: "Learn AWS",
-  //     done: false,
-  //     targetDate: target,
-  //   },
-  //   {
-  //     id: 2,
-  //     description: "Learn Java",
-  //     done: false,
-  //     targetDate: target,
-  //   },
-  //   {
-  //     id: 3,
-  //     description: "Learn Docker",
-  //     done: false,
-  //     targetDate: target,
-  //   },
-  // ];
+  const authContext = useAuth();
+
+  const username = authContext.username;
+
+  const navigate = useNavigate();
 
   const [todos, setTodos] = useState([]);
 
-  const refreshTodo = () => {
-    retrievedAllToDosForUser("heavenlight")
-      .then((res) => setTodos(res.data))
-      .catch((err) => console.log(err));
+  const [message, setMessage] = useState(null);
+
+  function refreshTodos() {
+    retrievedAllToDosForUser(username)
+      .then((response) => {
+        setTodos(response.data);
+      })
+      .catch((error) => console.log(error));
+  }
+  const deleteTodo = (id) => {
+    deleteTodoApi(username, id)
+      .then(() => {
+        setMessage(`Delete todo with id: ${id} successfull`);
+        setTimeout(() => setMessage(null), 3000);
+        refreshTodos();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const updateTodo = (id) => {
+    navigate(`/todos/${id}`);
+  };
+
+  const addNewToDo = () => {
+    navigate("/todos/-1");
   };
 
   useEffect(() => {
-    refreshTodo();
+    refreshTodos();
   }, []);
 
   const list = todos.map((todo) => (
     <tr key={todo.id}>
-      <td>{todo.id}</td>
       <td>{todo.description}</td>
       <td>{todo.done ? "Done" : "In progress"}</td>
       <td>{todo.targetDate}</td>
+      <td>
+        <button
+          className="btn btn-warning mx-5"
+          onClick={() => deleteTodo(todo.id)}
+        >
+          Delete
+        </button>
+        <button className="btn btn-success" onClick={() => updateTodo(todo.id)}>
+          Update
+        </button>
+      </td>
+
+      <td></td>
     </tr>
   ));
   return (
     <div className="container">
       <h1>Things you want to do</h1>
+      {message && <div className="alert alert-warning">{message}</div>}
+
       <table className="table">
         <thead>
           <tr>
-            <td>Id</td>
-            <td>Description</td>
-            <td>Done</td>
-            <td>Target Date</td>
+            <th>Description</th>
+            <th>Done</th>
+            <th>Target Date</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>{list}</tbody>
       </table>
+      <div className="btn btn-success m-5" onClick={addNewToDo}>
+        Add new Todo
+      </div>
     </div>
   );
 };
