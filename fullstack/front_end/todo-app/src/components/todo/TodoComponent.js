@@ -7,6 +7,7 @@ import {
 } from "./api/TodoApiService";
 import { useAuth } from "./security/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import moment from "moment";
 const TodoComponent = () => {
   const authContext = useAuth();
   const username = authContext.username;
@@ -14,6 +15,10 @@ const TodoComponent = () => {
   const [targetDate, setTargetDate] = useState("2023-01-14");
   const { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    retrieveTodo();
+  }, [id]);
   const retrieveTodo = () => {
     if (id !== -1) {
       retrieveTodoApi(username, id)
@@ -30,18 +35,18 @@ const TodoComponent = () => {
     if (values.description.length < 5) {
       errors.description = "Enter a valid description";
     }
-    if (Date.parse(values.targetDate) < new Date()) {
-      errors.targetDate = "Enter the valid date";
+    if (
+      values.targetDate === null ||
+      values.targetDate === "" ||
+      !moment(values.targetDate).isValid()
+    ) {
+      errors.targetDate = "Enter a target date";
     }
     return errors;
   };
 
-  useEffect(() => {
-    retrieveTodo();
-  }, [id]);
-
   const handleSubmit = (values) => {
-    if (id == -1) {
+    if (id < 1) {
       const newtodo = {
         username: username,
         description: values.description,
